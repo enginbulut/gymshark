@@ -22,8 +22,11 @@ drop_db:
 add_migration:
 	migrate create -ext sql -dir db/migration -seq $(migration_name)
 
-migrate_up:
+migrate_up_for_ci:
 	migrate -path ./db/migration -database "postgresql://root:secret@localhost:5454/gym_shark_db?sslmode=disable" -verbose up
+
+migrate_up:
+	migrate -path ./db/migration -database "postgresql://root:secret@postgres:5432/gym_shark_db?sslmode=disable" -verbose up
 
 migrate_down:
 	migrate -path ./db/migration -database "postgresql://root:secret@postgres:5432/gym_shark_db?sslmode=disable" -verbose down
