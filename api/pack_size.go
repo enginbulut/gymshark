@@ -56,7 +56,7 @@ func (server *Server) createPackSize(ctx *gin.Context) {
 
 type listPackSizeRequest struct {
 	PageID   int32 `form:"page_id" binding:"required,min=1"`
-	PageSize int32 `form:"page_size" binding:"required,min=5,max=10"`
+	PageSize int32 `form:"page_size" binding:"required,min=5"`
 }
 
 func (server *Server) listPackSizes(ctx *gin.Context) {
@@ -66,12 +66,12 @@ func (server *Server) listPackSizes(ctx *gin.Context) {
 		return
 	}
 
-	arg := db.GetPackSizesParams{
+	arg := db.GetPackSizesWithPaginationParams{
 		Limit:  req.PageSize,
 		Offset: (req.PageID - 1) * req.PageSize,
 	}
 
-	packSizes, err := server.store.GetPackSizes(ctx, arg)
+	packSizes, err := server.store.GetPackSizesWithPagination(ctx, arg)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return

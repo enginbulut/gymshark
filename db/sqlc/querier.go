@@ -21,7 +21,8 @@ type Querier interface {
 	GetOrders(ctx context.Context, arg GetOrdersParams) ([]GetOrdersRow, error)
 	GetOrdersByUserId(ctx context.Context, arg GetOrdersByUserIdParams) ([]GetOrdersByUserIdRow, error)
 	GetPackSize(ctx context.Context, id int64) (PackSize, error)
-	GetPackSizes(ctx context.Context, arg GetPackSizesParams) ([]PackSize, error)
+	GetPackSizesWithPagination(ctx context.Context, arg GetPackSizesWithPaginationParams) ([]PackSize, error)
+	GetPackSizesWithoutPagination(ctx context.Context) ([]PackSize, error)
 	GetUser(ctx context.Context, email string) (User, error)
 	UpdatePackSize(ctx context.Context, arg UpdatePackSizeParams) (PackSize, error)
 }

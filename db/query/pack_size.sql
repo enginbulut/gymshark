@@ -17,12 +17,17 @@ WHERE deleted_at IS NULL and quantity <= $1
 ORDER BY quantity DESC
 LIMIT 1;
 
--- name: GetPackSizes :many
+-- name: GetPackSizesWithPagination :many
 SELECT * FROM pack_sizes
 WHERE deleted_at IS NULL
 ORDER BY id
 LIMIT $1
 OFFSET $2;
+
+-- name: GetPackSizesWithoutPagination :many
+SELECT * FROM pack_sizes
+WHERE deleted_at IS NULL
+ORDER BY id;
 
 -- name: UpdatePackSize :one
 UPDATE pack_sizes

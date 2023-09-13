@@ -214,19 +214,34 @@ func (mr *MockStoreMockRecorder) GetPackSize(arg0, arg1 interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPackSize", reflect.TypeOf((*MockStore)(nil).GetPackSize), arg0, arg1)
 }
 
-// GetPackSizes mocks base method.
-func (m *MockStore) GetPackSizes(arg0 context.Context, arg1 db.GetPackSizesParams) ([]db.PackSize, error) {
+// GetPackSizesWithPagination mocks base method.
+func (m *MockStore) GetPackSizesWithPagination(arg0 context.Context, arg1 db.GetPackSizesWithPaginationParams) ([]db.PackSize, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetPackSizes", arg0, arg1)
+	ret := m.ctrl.Call(m, "GetPackSizesWithPagination", arg0, arg1)
 	ret0, _ := ret[0].([]db.PackSize)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetPackSizes indicates an expected call of GetPackSizes.
-func (mr *MockStoreMockRecorder) GetPackSizes(arg0, arg1 interface{}) *gomock.Call {
+// GetPackSizesWithPagination indicates an expected call of GetPackSizesWithPagination.
+func (mr *MockStoreMockRecorder) GetPackSizesWithPagination(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPackSizes", reflect.TypeOf((*MockStore)(nil).GetPackSizes), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPackSizesWithPagination", reflect.TypeOf((*MockStore)(nil).GetPackSizesWithPagination), arg0, arg1)
+}
+
+// GetPackSizesWithoutPagination mocks base method.
+func (m *MockStore) GetPackSizesWithoutPagination(arg0 context.Context) ([]db.PackSize, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPackSizesWithoutPagination", arg0)
+	ret0, _ := ret[0].([]db.PackSize)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPackSizesWithoutPagination indicates an expected call of GetPackSizesWithoutPagination.
+func (mr *MockStoreMockRecorder) GetPackSizesWithoutPagination(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPackSizesWithoutPagination", reflect.TypeOf((*MockStore)(nil).GetPackSizesWithoutPagination), arg0)
 }
 
 // GetUser mocks base method.

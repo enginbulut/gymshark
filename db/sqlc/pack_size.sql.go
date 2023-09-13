@@ -86,7 +86,7 @@ func (q *Queries) GetPackSize(ctx context.Context, id int64) (PackSize, error) {
 	return i, err
 }
 
-const getPackSizes = `-- name: GetPackSizes :many
+const getPackSizesWithPagination = `-- name: GetPackSizesWithPagination :many
 SELECT id, name, quantity, deleted_at, created_at FROM pack_sizes
 WHERE deleted_at IS NULL
 ORDER BY id
@@ -94,13 +94,48 @@ LIMIT $1
 OFFSET $2
 `
 
-type GetPackSizesParams struct {
+type GetPackSizesWithPaginationParams struct {
 	Limit  int32 `json:"limit"`
 	Offset int32 `json:"offset"`
 }
 
-func (q *Queries) GetPackSizes(ctx context.Context, arg GetPackSizesParams) ([]PackSize, error) {
-	rows, err := q.db.QueryContext(ctx, getPackSizes, arg.Limit, arg.Offset)
+func (q *Queries) GetPackSizesWithPagination(ctx context.Context, arg GetPackSizesWithPaginationParams) ([]PackSize, error) {
+	rows, err := q.db.QueryContext(ctx, getPackSizesWithPagination, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []PackSize{}
+	for rows.Next() {
+		var i PackSize
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Quantity,
+			&i.DeletedAt,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getPackSizesWithoutPagination = `-- name: GetPackSizesWithoutPagination :many
+SELECT id, name, quantity, deleted_at, created_at FROM pack_sizes
+WHERE deleted_at IS NULL
+ORDER BY id
+`
+
+func (q *Queries) GetPackSizesWithoutPagination(ctx context.Context) ([]PackSize, error) {
+	rows, err := q.db.QueryContext(ctx, getPackSizesWithoutPagination)
 	if err != nil {
 		return nil, err
 	}

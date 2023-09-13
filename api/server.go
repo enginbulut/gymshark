@@ -38,6 +38,9 @@ func (server *Server) setupRouter() {
 	authRoutes := router.Group("/").Use(authMiddleware(server.tokenMaker))
 	authRoutes.GET("/users/current", server.currentUser)
 	authRoutes.GET("/pack_sizes", server.listPackSizes)
+	authRoutes.GET("/orders", server.listOrders)
+	authRoutes.GET("/orders/:id", server.listOrderItems)
+	authRoutes.POST("/orders", server.createOrder)
 
 	adminRoutes := router.Group("/").Use(authMiddlewareForAdmin(server.tokenMaker))
 	adminRoutes.POST("/pack_sizes", server.createPackSize)
