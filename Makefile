@@ -23,10 +23,10 @@ add_migration:
 	migrate create -ext sql -dir db/migration -seq $(migration_name)
 
 migrate_up:
-	migrate -path ./db/migration -database "postgresql://root:secret@localhost:5432/gym_shark_db?sslmode=disable" -verbose up
+	migrate -path ./db/migration -database "postgresql://root:secret@localhost:5454/gym_shark_db?sslmode=disable" -verbose up
 
 migrate_down:
-	migrate -path ./db/migration -database "postgresql://root:secret@localhost:5432/gym_shark_db?sslmode=disable" -verbose down
+	migrate -path ./db/migration -database "postgresql://root:secret@postgres:5432/gym_shark_db?sslmode=disable" -verbose down
 
 sqlc:
 	sqlc generate
