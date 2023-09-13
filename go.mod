@@ -3,6 +3,8 @@ module github.com/enginbulut/gymshark
 go 1.21.1
 
 require (
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/google/uuid v1.3.1
 	github.com/jackc/pgx/v5 v5.4.3
 	github.com/lib/pq v1.10.9
 	github.com/spf13/viper v1.16.0
