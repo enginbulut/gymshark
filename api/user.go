@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	db "github.com/enginbulut/gymshark/db/sqlc"
+	"github.com/enginbulut/gymshark/token"
 	"github.com/enginbulut/gymshark/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -16,15 +17,19 @@ type createUserRequest struct {
 }
 
 type userResponse struct {
+	Id        int64     `json:"id"`
 	FullName  string    `json:"full_name"`
 	Email     string    `json:"email"`
+	Role      int32     `json:"role"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
 func newUserResponse(user db.User) userResponse {
 	return userResponse{
-		Email:     user.Email,
+		Id:        user.ID,
 		FullName:  user.FullName,
+		Email:     user.Email,
+		Role:      user.Role,
 		CreatedAt: user.CreatedAt,
 	}
 }
@@ -99,6 +104,9 @@ func (server *Server) loginUser(ctx *gin.Context) {
 
 	accessToken, accessPayload, err := server.tokenMaker.CreateToken(
 		user.Email,
+		user.ID,
+		user.FullName,
+		user.Role,
 		server.config.AccessTokenDuration,
 	)
 	if err != nil {
@@ -108,6 +116,9 @@ func (server *Server) loginUser(ctx *gin.Context) {
 
 	refreshToken, refreshPayload, err := server.tokenMaker.CreateToken(
 		user.Email,
+		user.ID,
+		user.FullName,
+		user.Role,
 		server.config.RefreshTokenDuration,
 	)
 	if err != nil {
@@ -123,4 +134,10 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		User:                  newUserResponse(user),
 	}
 	ctx.JSON(http.StatusOK, rsp)
+}
+
+func (server *Server) currentUser(ctx *gin.Context) {
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+
+	ctx.JSON(http.StatusOK, authPayload)
 }
