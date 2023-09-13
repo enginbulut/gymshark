@@ -5,7 +5,7 @@ pull_postgres:
 	docker pull postgres:12-alpine
 
 init_postgres:
-	docker run --name postgres12 --network shark-network -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
+	docker run --name postgres12 --network shark-network -p 5454:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
 
 start_postgres:
 	docker start postgres12
@@ -22,14 +22,11 @@ drop_db:
 add_migration:
 	migrate create -ext sql -dir db/migration -seq $(migration_name)
 
-migrate_up_for_ci:
+migrate_up:
 	migrate -path ./db/migration -database "postgresql://root:secret@localhost:5454/gym_shark_db?sslmode=disable" -verbose up
 
-migrate_up:
-	migrate -path ./db/migration -database "postgresql://root:secret@postgres:5432/gym_shark_db?sslmode=disable" -verbose up
-
 migrate_down:
-	migrate -path ./db/migration -database "postgresql://root:secret@postgres:5432/gym_shark_db?sslmode=disable" -verbose down
+	migrate -path ./db/migration -database "postgresql://root:secret@localhost:5454/gym_shark_db?sslmode=disable" -verbose down
 
 sqlc:
 	sqlc generate

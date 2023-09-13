@@ -2,6 +2,8 @@ version: "3.9"
 services:
   postgres:
     image: postgres:12-alpine
+    ports:
+      - "5454:5432"
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=secret
