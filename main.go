@@ -7,6 +7,7 @@ import (
 	"github.com/enginbulut/gymshark/util"
 	"log"
 
+	_ "github.com/golang/mock/mockgen/model"
 	_ "github.com/lib/pq"
 )
 
