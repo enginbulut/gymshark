@@ -10,5 +10,6 @@ CREATE TABLE "users" (
 CREATE UNIQUE INDEX unq_user_email ON "users" ("email");
 
 INSERT INTO users (full_name, email, role, hashed_password)
-VALUES ('Admin User', 'admin@test.com', 1, 'test_hashed_password');
+VALUES ('Admin User', 'admin@test.com', 1, '$2a$10$czyE8ApP2BhvbcYyP0ns3OnfDZWe1/pbeXyURUiKuYv3a2N1AKk3a');
+-- password is administrator
 
