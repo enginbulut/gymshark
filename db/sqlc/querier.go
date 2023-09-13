@@ -9,8 +9,21 @@ import (
 )
 
 type Querier interface {
+	CreateOrder(ctx context.Context, arg CreateOrderParams) (Order, error)
+	CreateOrderItem(ctx context.Context, arg CreateOrderItemParams) (OrderItem, error)
+	CreatePackSize(ctx context.Context, arg CreatePackSizeParams) (PackSize, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
+	DeletePackSize(ctx context.Context, id int64) error
+	GetClosestPackSizeByQuantity(ctx context.Context, quantity int32) (PackSize, error)
+	GetOrder(ctx context.Context, id int64) (GetOrderRow, error)
+	GetOrderItemsByOrderId(ctx context.Context, arg GetOrderItemsByOrderIdParams) ([]GetOrderItemsByOrderIdRow, error)
+	GetOrderItemsByPackSizeId(ctx context.Context, arg GetOrderItemsByPackSizeIdParams) ([]GetOrderItemsByPackSizeIdRow, error)
+	GetOrders(ctx context.Context, arg GetOrdersParams) ([]GetOrdersRow, error)
+	GetOrdersByUserId(ctx context.Context, arg GetOrdersByUserIdParams) ([]GetOrdersByUserIdRow, error)
+	GetPackSize(ctx context.Context, id int64) (PackSize, error)
+	GetPackSizes(ctx context.Context, arg GetPackSizesParams) ([]PackSize, error)
 	GetUser(ctx context.Context, email string) (User, error)
+	UpdatePackSize(ctx context.Context, arg UpdatePackSizeParams) (PackSize, error)
 }
 
 var _ Querier = (*Queries)(nil)
