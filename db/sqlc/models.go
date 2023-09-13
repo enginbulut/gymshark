@@ -5,8 +5,33 @@
 package db
 
 import (
+	"database/sql"
 	"time"
 )
+
+type Order struct {
+	ID                 int64     `json:"id"`
+	PurchasedItemCount int32     `json:"purchased_item_count"`
+	RequestedItemCount int32     `json:"requested_item_count"`
+	UserID             int32     `json:"user_id"`
+	CreatedAt          time.Time `json:"created_at"`
+}
+
+type OrderItem struct {
+	ID         int64     `json:"id"`
+	Quantity   int32     `json:"quantity"`
+	PackSizeID int32     `json:"pack_size_id"`
+	OrderID    int32     `json:"order_id"`
+	CreatedAt  time.Time `json:"created_at"`
+}
+
+type PackSize struct {
+	ID        int64        `json:"id"`
+	Name      string       `json:"name"`
+	Quantity  int32        `json:"quantity"`
+	DeletedAt sql.NullTime `json:"deleted_at"`
+	CreatedAt time.Time    `json:"created_at"`
+}
 
 type User struct {
 	ID             int64     `json:"id"`
