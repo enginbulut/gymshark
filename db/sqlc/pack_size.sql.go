@@ -101,7 +101,7 @@ func (q *Queries) GetPackSizeCount(ctx context.Context) (int64, error) {
 const getPackSizesWithPagination = `-- name: GetPackSizesWithPagination :many
 SELECT id, name, quantity, deleted_at, created_at FROM pack_sizes
 WHERE deleted_at IS NULL
-ORDER BY id
+ORDER BY id desc
 LIMIT $1
 OFFSET $2
 `
@@ -143,7 +143,7 @@ func (q *Queries) GetPackSizesWithPagination(ctx context.Context, arg GetPackSiz
 const getPackSizesWithoutPagination = `-- name: GetPackSizesWithoutPagination :many
 SELECT id, name, quantity, deleted_at, created_at FROM pack_sizes
 WHERE deleted_at IS NULL
-ORDER BY id
+ORDER BY id desc
 `
 
 func (q *Queries) GetPackSizesWithoutPagination(ctx context.Context) ([]PackSize, error) {

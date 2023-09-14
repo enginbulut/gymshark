@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  @import "~antd/dist/antd.css";
+}
+
+main {
+  background-color: rgb(245, 245, 245);
+}
+
+#application-layout {
+  transition: all 2.2s ease-in-out;
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: 200px 1fr 500px;
+  grid-template-rows:
+    56px
+    1fr;
+}
+
+#application-layout header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+#application-layout main {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row: 2;
+  overflow: hidden;
+}
+#application-layout:not(.show-sidepanel) main {
+  grid-column-end: -1;
+}
+
+.ant-modal-content {
+  border-radius: 10px;
+}
+
+.ant-modal-header {
+  border-radius: 10px;
+}

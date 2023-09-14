@@ -20,14 +20,14 @@ LIMIT 1;
 -- name: GetPackSizesWithPagination :many
 SELECT * FROM pack_sizes
 WHERE deleted_at IS NULL
-ORDER BY id
+ORDER BY id desc
 LIMIT $1
 OFFSET $2;
 
 -- name: GetPackSizesWithoutPagination :many
 SELECT * FROM pack_sizes
 WHERE deleted_at IS NULL
-ORDER BY id;
+ORDER BY id desc;
 
 -- name: GetPackSizeCount :one
 SELECT COUNT(id) FROM pack_sizes
