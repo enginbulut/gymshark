@@ -67,12 +67,26 @@ func (container *PackSizeContainer) addCalculatedItem(packSize *AvailablePackSiz
 	existingItem := container.findExistingCalculatedItem(packSize.PackSizeId)
 	if existingItem != nil {
 		existingItem.Quantity = existingItem.Quantity + quantity
+		item := container.findExistingPackSizeByQuantity(existingItem.Quantity * existingItem.PackSize.PackQuantity)
+		if item != nil {
+			// if there is an additional pack that can handle the total of items by itself, then no need to send multiple packages
+			existingItem.Quantity = 1
+			existingItem.PackSize = item
+		}
 	} else {
 		container.CalculatedItems = append(container.CalculatedItems, CalculatedItems{
 			PackSize: packSize,
 			Quantity: quantity,
 		})
 	}
+}
+
+func (container *PackSizeContainer) findExistingPackSizeByQuantity(quantity int) *AvailablePackSize {
+	index := slices.IndexFunc(container.PackSizes, func(ps AvailablePackSize) bool { return ps.PackQuantity == quantity })
+	if index != -1 {
+		return &container.PackSizes[index]
+	}
+	return nil
 }
 
 func (container *PackSizeContainer) findBiggestPackSizeSmallerOrEqualToRequestedSize() *AvailablePackSize {
