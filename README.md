@@ -67,3 +67,4 @@ Optional:
 * The app is dockerized so the only thing you need to is to call `docker compose up` and access `localhost:3000`
 * It uses postgresql to persist the data. 
 * It uses `sqlc` to generate data layer. And, it uses mockgen to generate dummy database for testing purpose.
+* DO NOT FORGET TO ADD PACK SIZE WHEN YOU USE OPEN THE UI BEFORE YOU CREATE THE ORDER.
