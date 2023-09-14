@@ -26,3 +26,13 @@ services:
         "/app/start.sh"
       ]
     command: [ "/app/main" ]
+  client:
+    build: ./frontend
+    volumes:
+      - ./frontend:/client
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=api:8080
+    depends_on:
+      - api
