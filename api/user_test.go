@@ -182,6 +182,7 @@ func randomUser(t *testing.T) (user db.User, password string) {
 		HashedPassword: hashedPassword,
 		FullName:       util.RandomFullName(),
 		Email:          util.RandomEmail(),
+		Role:           util.Admin,
 	}
 	return
 }

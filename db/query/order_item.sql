@@ -12,15 +12,11 @@ SELECT oi.*, ps.name as pack_size_name, ps.quantity as pack_size_quantity
 FROM order_items oi
 INNER JOIN pack_sizes ps on oi.pack_size_id = ps.id
 WHERE oi.order_id = $1
-ORDER BY oi.id DESC
-LIMIT $2
-OFFSET $3;
+ORDER BY oi.id DESC;
 
 -- name: GetOrderItemsByPackSizeId :many
 SELECT oi.*, ps.name as pack_size_name, ps.quantity as pack_size_quantity
 FROM order_items oi
 INNER JOIN pack_sizes ps on oi.pack_size_id = ps.id
 WHERE oi.pack_size_id = $1
-ORDER BY oi.id DESC
-LIMIT $2
-OFFSET $3;
+ORDER BY oi.id DESC;

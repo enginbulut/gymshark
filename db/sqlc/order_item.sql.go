@@ -45,15 +45,7 @@ FROM order_items oi
 INNER JOIN pack_sizes ps on oi.pack_size_id = ps.id
 WHERE oi.order_id = $1
 ORDER BY oi.id DESC
-LIMIT $2
-OFFSET $3
 `
-
-type GetOrderItemsByOrderIdParams struct {
-	OrderID int32 `json:"order_id"`
-	Limit   int32 `json:"limit"`
-	Offset  int32 `json:"offset"`
-}
 
 type GetOrderItemsByOrderIdRow struct {
 	ID               int64     `json:"id"`
@@ -65,8 +57,8 @@ type GetOrderItemsByOrderIdRow struct {
 	PackSizeQuantity int32     `json:"pack_size_quantity"`
 }
 
-func (q *Queries) GetOrderItemsByOrderId(ctx context.Context, arg GetOrderItemsByOrderIdParams) ([]GetOrderItemsByOrderIdRow, error) {
-	rows, err := q.db.QueryContext(ctx, getOrderItemsByOrderId, arg.OrderID, arg.Limit, arg.Offset)
+func (q *Queries) GetOrderItemsByOrderId(ctx context.Context, orderID int32) ([]GetOrderItemsByOrderIdRow, error) {
+	rows, err := q.db.QueryContext(ctx, getOrderItemsByOrderId, orderID)
 	if err != nil {
 		return nil, err
 	}
@@ -102,15 +94,7 @@ FROM order_items oi
 INNER JOIN pack_sizes ps on oi.pack_size_id = ps.id
 WHERE oi.pack_size_id = $1
 ORDER BY oi.id DESC
-LIMIT $2
-OFFSET $3
 `
-
-type GetOrderItemsByPackSizeIdParams struct {
-	PackSizeID int32 `json:"pack_size_id"`
-	Limit      int32 `json:"limit"`
-	Offset     int32 `json:"offset"`
-}
 
 type GetOrderItemsByPackSizeIdRow struct {
 	ID               int64     `json:"id"`
@@ -122,8 +106,8 @@ type GetOrderItemsByPackSizeIdRow struct {
 	PackSizeQuantity int32     `json:"pack_size_quantity"`
 }
 
-func (q *Queries) GetOrderItemsByPackSizeId(ctx context.Context, arg GetOrderItemsByPackSizeIdParams) ([]GetOrderItemsByPackSizeIdRow, error) {
-	rows, err := q.db.QueryContext(ctx, getOrderItemsByPackSizeId, arg.PackSizeID, arg.Limit, arg.Offset)
+func (q *Queries) GetOrderItemsByPackSizeId(ctx context.Context, packSizeID int32) ([]GetOrderItemsByPackSizeIdRow, error) {
+	rows, err := q.db.QueryContext(ctx, getOrderItemsByPackSizeId, packSizeID)
 	if err != nil {
 		return nil, err
 	}
