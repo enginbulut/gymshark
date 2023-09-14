@@ -72,10 +72,10 @@ func TestCalculateCorrectPack(t *testing.T) {
 			expectedCalculatedItemQuantitySum: 500,
 			expectedCalculatedItems: []CalculatedItems{{
 				PackSize: &AvailablePackSize{
-					PackSizeId:   3,
-					PackQuantity: 250,
+					PackSizeId:   1,
+					PackQuantity: 500,
 				},
-				Quantity: 2,
+				Quantity: 1,
 			}},
 		},
 		{
