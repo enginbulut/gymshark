@@ -5,7 +5,9 @@ import (
 	db "github.com/enginbulut/gymshark/db/sqlc"
 	"github.com/enginbulut/gymshark/token"
 	"github.com/enginbulut/gymshark/util"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 type Server struct {
@@ -32,6 +34,14 @@ func NewServer(config util.Config, store db.Store) (*Server, error) {
 
 func (server *Server) setupRouter() {
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"POST", "DELETE", "GET", "PUT", "PATCH", "OPTIONS"},
+		AllowHeaders:     []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With"},
+		ExposeHeaders:    []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 	router.POST("/users/login", server.loginUser)
 	router.POST("/users", server.createUser)
 
