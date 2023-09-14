@@ -37,8 +37,8 @@ func (server *Server) setupRouter() {
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
 		AllowMethods:     []string{"POST", "DELETE", "GET", "PUT", "PATCH", "OPTIONS"},
-		AllowHeaders:     []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With"},
-		ExposeHeaders:    []string{"Content-Type", "Content-Length", "Accept-Encoding", "X-CSRF-Token", "Authorization", "accept", "origin", "Cache-Control", "X-Requested-With"},
+		AllowHeaders:     []string{"*"},
+		ExposeHeaders:    []string{"*"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
@@ -46,6 +46,7 @@ func (server *Server) setupRouter() {
 	router.POST("/users", server.createUser)
 
 	authRoutes := router.Group("/").Use(authMiddleware(server.tokenMaker))
+
 	authRoutes.GET("/users/current", server.currentUser)
 	authRoutes.GET("/pack_sizes", server.listPackSizes)
 	authRoutes.GET("/orders", server.listOrders)
