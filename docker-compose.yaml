@@ -27,12 +27,14 @@ services:
       ]
     command: [ "/app/main" ]
   client:
+    container_name: frontend-app
     build: ./frontend
     volumes:
       - ./frontend:/client
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_BASE_URL=api:8080
+      - NEXT_PUBLIC_API_BASE_URL=localhost:8080
+      - SERVER_API_BASE_URL=api:8080
     depends_on:
       - api

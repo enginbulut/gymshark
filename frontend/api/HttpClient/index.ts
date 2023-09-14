@@ -10,11 +10,15 @@ import PackSizeApi from "./Api/PackSizeApi";
 
 // Defining Server Side Http Client
 const serverSideHttpClient = axios.create(
-  EnvironmentHelper.defaultAxiosRequestConfiguration()
+  EnvironmentHelper.defaultAxiosRequestConfiguration(
+    EnvironmentHelper.SERVER_API_BASE_URL
+  )
 );
 // Defining Client Side Http Client
 let browserSideHttpClient = axios.create(
-  EnvironmentHelper.defaultAxiosRequestConfiguration()
+  EnvironmentHelper.defaultAxiosRequestConfiguration(
+    EnvironmentHelper.API_BASE_URL
+  )
 );
 browserSideHttpClient.interceptors.request.use(...injectAuthHeadersAdapter);
 
