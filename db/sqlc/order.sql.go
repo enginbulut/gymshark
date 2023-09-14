@@ -182,3 +182,30 @@ func (q *Queries) GetOrdersByUserId(ctx context.Context, arg GetOrdersByUserIdPa
 	}
 	return items, nil
 }
+
+const getOrdersCount = `-- name: GetOrdersCount :one
+SELECT COUNT(*)
+FROM orders o
+INNER JOIN users u on o.user_id = u.id
+`
+
+func (q *Queries) GetOrdersCount(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getOrdersCount)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
+const getOrdersCountByUserId = `-- name: GetOrdersCountByUserId :one
+SELECT COUNT(*)
+FROM orders o
+INNER JOIN users u on o.user_id = u.id
+WHERE o.user_id = $1
+`
+
+func (q *Queries) GetOrdersCountByUserId(ctx context.Context, userID int32) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getOrdersCountByUserId, userID)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}

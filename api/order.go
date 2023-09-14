@@ -15,6 +15,16 @@ type listOrderRequest struct {
 	PageSize int32 `form:"page_size" binding:"required,min=5"`
 }
 
+type orderListResponse struct {
+	Total int64             `json:"total"`
+	List  []db.GetOrdersRow `json:"orders"`
+}
+
+type orderByUserListResponse struct {
+	Total int64                     `json:"total"`
+	List  []db.GetOrdersByUserIdRow `json:"orders"`
+}
+
 func (server *Server) listOrders(ctx *gin.Context) {
 	var req listOrderRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
@@ -29,24 +39,40 @@ func (server *Server) listOrders(ctx *gin.Context) {
 			Limit:  req.PageSize,
 			Offset: (req.PageID - 1) * req.PageSize,
 		}
+		count, err := server.store.GetOrdersCount(ctx)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
 		orders, err := server.store.GetOrders(ctx, arg)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 			return
 		}
-		ctx.JSON(http.StatusOK, orders)
+		ctx.JSON(http.StatusOK, orderListResponse{
+			Total: count,
+			List:  orders,
+		})
 	} else {
 		arg := db.GetOrdersByUserIdParams{
 			UserID: int32(authPayload.UserID),
 			Limit:  req.PageSize,
 			Offset: (req.PageID - 1) * req.PageSize,
 		}
+		count, err := server.store.GetOrdersCountByUserId(ctx, int32(authPayload.UserID))
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
 		orders, err := server.store.GetOrdersByUserId(ctx, arg)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 			return
 		}
-		ctx.JSON(http.StatusOK, orders)
+		ctx.JSON(http.StatusOK, orderByUserListResponse{
+			Total: count,
+			List:  orders,
+		})
 	}
 }
 
@@ -55,12 +81,6 @@ type listOrderItemRequest struct {
 }
 
 func (server *Server) listOrderItems(ctx *gin.Context) {
-	var req listOrderRequest
-	if err := ctx.ShouldBindQuery(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, errorResponse(err))
-		return
-	}
-
 	var uriReq listOrderItemRequest
 	if err := ctx.ShouldBindUri(&uriReq); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
@@ -85,13 +105,7 @@ func (server *Server) listOrderItems(ctx *gin.Context) {
 		return
 	}
 
-	arg := db.GetOrderItemsByOrderIdParams{
-		OrderID: int32(uriReq.Id),
-		Limit:   req.PageSize,
-		Offset:  (req.PageID - 1) * req.PageSize,
-	}
-
-	orderItems, err := server.store.GetOrderItemsByOrderId(ctx, arg)
+	orderItems, err := server.store.GetOrderItemsByOrderId(ctx, int32(uriReq.Id))
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
@@ -122,6 +136,11 @@ func (server *Server) createOrder(ctx *gin.Context) {
 	packSizes, err := server.store.GetPackSizesWithoutPagination(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	if len(packSizes) == 0 {
+		errors.New("there is no defined pack size, you can not create order")
+		ctx.JSON(http.StatusNotFound, errorResponse(err))
 		return
 	}
 

@@ -86,6 +86,18 @@ func (q *Queries) GetPackSize(ctx context.Context, id int64) (PackSize, error) {
 	return i, err
 }
 
+const getPackSizeCount = `-- name: GetPackSizeCount :one
+SELECT COUNT(id) FROM pack_sizes
+WHERE deleted_at IS NULL
+`
+
+func (q *Queries) GetPackSizeCount(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getPackSizeCount)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const getPackSizesWithPagination = `-- name: GetPackSizesWithPagination :many
 SELECT id, name, quantity, deleted_at, created_at FROM pack_sizes
 WHERE deleted_at IS NULL

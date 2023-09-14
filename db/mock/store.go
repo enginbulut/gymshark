@@ -140,7 +140,7 @@ func (mr *MockStoreMockRecorder) GetOrder(arg0, arg1 interface{}) *gomock.Call {
 }
 
 // GetOrderItemsByOrderId mocks base method.
-func (m *MockStore) GetOrderItemsByOrderId(arg0 context.Context, arg1 db.GetOrderItemsByOrderIdParams) ([]db.GetOrderItemsByOrderIdRow, error) {
+func (m *MockStore) GetOrderItemsByOrderId(arg0 context.Context, arg1 int32) ([]db.GetOrderItemsByOrderIdRow, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetOrderItemsByOrderId", arg0, arg1)
 	ret0, _ := ret[0].([]db.GetOrderItemsByOrderIdRow)
@@ -155,7 +155,7 @@ func (mr *MockStoreMockRecorder) GetOrderItemsByOrderId(arg0, arg1 interface{}) 
 }
 
 // GetOrderItemsByPackSizeId mocks base method.
-func (m *MockStore) GetOrderItemsByPackSizeId(arg0 context.Context, arg1 db.GetOrderItemsByPackSizeIdParams) ([]db.GetOrderItemsByPackSizeIdRow, error) {
+func (m *MockStore) GetOrderItemsByPackSizeId(arg0 context.Context, arg1 int32) ([]db.GetOrderItemsByPackSizeIdRow, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetOrderItemsByPackSizeId", arg0, arg1)
 	ret0, _ := ret[0].([]db.GetOrderItemsByPackSizeIdRow)
@@ -199,6 +199,36 @@ func (mr *MockStoreMockRecorder) GetOrdersByUserId(arg0, arg1 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOrdersByUserId", reflect.TypeOf((*MockStore)(nil).GetOrdersByUserId), arg0, arg1)
 }
 
+// GetOrdersCount mocks base method.
+func (m *MockStore) GetOrdersCount(arg0 context.Context) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetOrdersCount", arg0)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOrdersCount indicates an expected call of GetOrdersCount.
+func (mr *MockStoreMockRecorder) GetOrdersCount(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOrdersCount", reflect.TypeOf((*MockStore)(nil).GetOrdersCount), arg0)
+}
+
+// GetOrdersCountByUserId mocks base method.
+func (m *MockStore) GetOrdersCountByUserId(arg0 context.Context, arg1 int32) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetOrdersCountByUserId", arg0, arg1)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOrdersCountByUserId indicates an expected call of GetOrdersCountByUserId.
+func (mr *MockStoreMockRecorder) GetOrdersCountByUserId(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOrdersCountByUserId", reflect.TypeOf((*MockStore)(nil).GetOrdersCountByUserId), arg0, arg1)
+}
+
 // GetPackSize mocks base method.
 func (m *MockStore) GetPackSize(arg0 context.Context, arg1 int64) (db.PackSize, error) {
 	m.ctrl.T.Helper()
@@ -212,6 +242,21 @@ func (m *MockStore) GetPackSize(arg0 context.Context, arg1 int64) (db.PackSize, 
 func (mr *MockStoreMockRecorder) GetPackSize(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPackSize", reflect.TypeOf((*MockStore)(nil).GetPackSize), arg0, arg1)
+}
+
+// GetPackSizeCount mocks base method.
+func (m *MockStore) GetPackSizeCount(arg0 context.Context) (int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPackSizeCount", arg0)
+	ret0, _ := ret[0].(int64)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPackSizeCount indicates an expected call of GetPackSizeCount.
+func (mr *MockStoreMockRecorder) GetPackSizeCount(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPackSizeCount", reflect.TypeOf((*MockStore)(nil).GetPackSizeCount), arg0)
 }
 
 // GetPackSizesWithPagination mocks base method.

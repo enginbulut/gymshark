@@ -29,6 +29,10 @@ SELECT * FROM pack_sizes
 WHERE deleted_at IS NULL
 ORDER BY id;
 
+-- name: GetPackSizeCount :one
+SELECT COUNT(id) FROM pack_sizes
+WHERE deleted_at IS NULL;
+
 -- name: UpdatePackSize :one
 UPDATE pack_sizes
 SET name = sqlc.arg(name), quantity = sqlc.arg(quantity)

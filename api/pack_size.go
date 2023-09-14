@@ -20,6 +20,11 @@ type packSizeResponse struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type packSizeListResponse struct {
+	Total int64         `json:"total"`
+	List  []db.PackSize `json:"pack_sizes"`
+}
+
 func newPackSizeResponse(packSize db.PackSize) packSizeResponse {
 	return packSizeResponse{
 		Id:        packSize.ID,
@@ -70,6 +75,11 @@ func (server *Server) listPackSizes(ctx *gin.Context) {
 		Limit:  req.PageSize,
 		Offset: (req.PageID - 1) * req.PageSize,
 	}
+	totalPackSize, err := server.store.GetPackSizeCount(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
 
 	packSizes, err := server.store.GetPackSizesWithPagination(ctx, arg)
 	if err != nil {
@@ -77,7 +87,10 @@ func (server *Server) listPackSizes(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, packSizes)
+	ctx.JSON(http.StatusOK, packSizeListResponse{
+		Total: totalPackSize,
+		List:  packSizes,
+	})
 }
 
 type packSizeUriRequest struct {
